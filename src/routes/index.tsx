@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import {
   ArrowUpRight, Mail, Linkedin, GraduationCap, Briefcase,
   Code2, Palette, PenTool, Sparkles, Mic2, Users, Trophy,
-  ArrowRight, MapPin, Send,
+  ArrowRight, MapPin, Send, Brain, Cpu, Zap, Bot,
 } from "lucide-react";
 import portrait from "@/assets/hero-portrait.jpg";
 
