@@ -4,17 +4,17 @@ import { useRef, useState } from "react";
 import {
   ArrowUpRight, Mail, Linkedin, GraduationCap, Briefcase,
   Code2, Palette, PenTool, Sparkles, Mic2, Users, Trophy,
-  ArrowRight, MapPin, Send,
+  ArrowRight, MapPin, Send, Brain, Cpu, Zap, Bot,
 } from "lucide-react";
 import portrait from "@/assets/hero-portrait.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Haripriya Jayakanthan — Engineer, Designer & Creator" },
-      { name: "description", content: "Portfolio of Haripriya Jayakanthan — engineering student passionate about AI, web design, development and content creation." },
+      { title: "Haripriya Jayakanthan — B.Tech IT, Designer & Creator" },
+      { name: "description", content: "Portfolio of Haripriya Jayakanthan — B.Tech Information Technology student passionate about AI, web design, development and content creation." },
       { property: "og:title", content: "Haripriya Jayakanthan — Portfolio" },
-      { property: "og:description", content: "Engineering student. Web designer. Web developer. Content creator." },
+      { property: "og:description", content: "B.Tech IT student. Web designer. Web developer. Content creator." },
     ],
   }),
   component: Portfolio,
@@ -92,6 +92,62 @@ function Hero() {
 
   return (
     <section ref={ref} id="home" className="relative min-h-screen pt-32 pb-20 px-4 sm:px-8 overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
+      {/* AI Neural Grid Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `linear-gradient(var(--foreground) 1px, transparent 1px), linear-gradient(90deg, var(--foreground) 1px, transparent 1px)`,
+          backgroundSize: '60px 60px',
+        }} />
+        {/* Floating data nodes */}
+        {[
+          { top: '15%', left: '8%', size: 3, delay: 0, duration: 8 },
+          { top: '25%', left: '85%', size: 4, delay: 1, duration: 10 },
+          { top: '65%', left: '12%', size: 2, delay: 2, duration: 7 },
+          { top: '75%', left: '90%', size: 3, delay: 0.5, duration: 9 },
+          { top: '40%', left: '5%', size: 2, delay: 1.5, duration: 11 },
+          { top: '85%', left: '70%', size: 3, delay: 3, duration: 8 },
+          { top: '10%', left: '60%', size: 2, delay: 2.5, duration: 12 },
+          { top: '55%', left: '95%', size: 2, delay: 0.8, duration: 10 },
+        ].map((node, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full bg-accent/40"
+            style={{
+              top: node.top,
+              left: node.left,
+              width: node.size,
+              height: node.size,
+              boxShadow: '0 0 12px 2px oklch(0.82 0.06 305 / 0.3)',
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.3, 0.8, 0.3],
+            }}
+            transition={{
+              duration: node.duration,
+              delay: node.delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+        {/* Glowing connection lines */}
+        <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+          <line x1="8%" y1="15%" x2="60%" y2="10%" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4">
+            <animate attributeName="stroke-dashoffset" from="0" to="16" dur="3s" repeatCount="indefinite" />
+          </line>
+          <line x1="85%" y1="25%" x2="95%" y2="55%" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4">
+            <animate attributeName="stroke-dashoffset" from="0" to="16" dur="4s" repeatCount="indefinite" />
+          </line>
+          <line x1="12%" y1="65%" x2="70%" y2="85%" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4">
+            <animate attributeName="stroke-dashoffset" from="0" to="16" dur="5s" repeatCount="indefinite" />
+          </line>
+          <line x1="90%" y1="75%" x2="70%" y2="85%" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4">
+            <animate attributeName="stroke-dashoffset" from="0" to="16" dur="3.5s" repeatCount="indefinite" />
+          </line>
+        </svg>
+      </div>
+
       <motion.div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full opacity-50 blur-3xl"
         style={{ background: "var(--gradient-soft)" }}
         animate={{ scale: [1, 1.1, 1], rotate: [0, 30, 0] }}
@@ -108,7 +164,7 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
             className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-wide text-muted-foreground"
           >
-            <Sparkles className="h-3.5 w-3.5 text-accent" /> Available for collaborations
+            <Brain className="h-3.5 w-3.5 text-accent" /> Exploring AI & building the future
           </motion.div>
 
           <h1 className="font-display text-5xl sm:text-7xl lg:text-8xl leading-[0.95] text-balance">
@@ -124,7 +180,7 @@ function Hero() {
           </h1>
 
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Engineering student · Web designer · Web developer · Content creator.
+            B.Tech Information Technology student · Web designer · Web developer · Content creator.
             Passionate about AI, technology, creativity, and continuous learning.
           </motion.p>
 
@@ -139,7 +195,7 @@ function Hero() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="flex items-center gap-8 pt-4 text-sm text-muted-foreground">
-            <div><div className="font-display text-2xl text-foreground">3rd</div>Year B.E.</div>
+            <div><div className="font-display text-2xl text-foreground">3rd</div>Year B.Tech</div>
             <div className="h-8 w-px bg-border" />
             <div><div className="font-display text-2xl text-foreground">6+</div>Core skills</div>
             <div className="h-8 w-px bg-border" />
@@ -151,26 +207,62 @@ function Hero() {
           initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.2 }}
           className="relative mx-auto lg:mx-0 w-full max-w-md"
         >
+          {/* AI ring around portrait */}
+          <motion.div
+            className="absolute -inset-4 rounded-[2.5rem] border border-accent/20 pointer-events-none"
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute -inset-8 rounded-[3rem] border border-dashed border-foreground/5 pointer-events-none"
+            animate={{ rotate: [360, 0] }}
+            transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+          />
+
           <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-glow">
             <div className="absolute inset-0" style={{ background: "var(--gradient-soft)" }} />
             <img src={portrait} alt="Haripriya Jayakanthan portrait" width={1024} height={1280} className="relative h-full w-full object-cover mix-blend-luminosity opacity-95" />
             <div className="absolute inset-0 ring-1 ring-inset ring-white/30 rounded-[2rem]" />
+            {/* Scan line overlay */}
+            <motion.div
+              className="absolute inset-x-0 h-px bg-accent/30"
+              animate={{ top: ['0%', '100%', '0%'] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            />
           </div>
+
           <motion.div
             animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             className="absolute -bottom-6 -left-6 glass rounded-2xl px-4 py-3 shadow-soft flex items-center gap-3"
           >
-            <div className="h-9 w-9 rounded-full bg-accent flex items-center justify-center"><Code2 className="h-4 w-4" /></div>
+            <div className="h-9 w-9 rounded-full bg-accent flex items-center justify-center"><Bot className="h-4 w-4" /></div>
             <div className="text-xs">
               <div className="font-medium">Currently learning</div>
-              <div className="text-muted-foreground">AI & modern web</div>
+              <div className="text-muted-foreground">AI & Generative Models</div>
             </div>
           </motion.div>
+
           <motion.div
             animate={{ y: [0, 10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             className="absolute -top-4 -right-4 glass rounded-full px-4 py-2 shadow-soft text-xs flex items-center gap-2"
           >
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Open to work
+          </motion.div>
+
+          <motion.div
+            animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute top-1/2 -right-10 glass rounded-xl px-3 py-2 shadow-soft flex items-center gap-2"
+          >
+            <Cpu className="h-3.5 w-3.5 text-accent" />
+            <span className="text-[10px] font-medium">ML Enthusiast</span>
+          </motion.div>
+
+          <motion.div
+            animate={{ y: [0, 8, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            className="absolute bottom-1/3 -left-10 glass rounded-xl px-3 py-2 shadow-soft flex items-center gap-2"
+          >
+            <Zap className="h-3.5 w-3.5 text-accent" />
+            <span className="text-[10px] font-medium">Tech Explorer</span>
           </motion.div>
         </motion.div>
       </div>
@@ -216,7 +308,7 @@ function About() {
       <SectionHeader kicker="About" title="A curious mind, building thoughtfully." />
       <div className="grid lg:grid-cols-2 gap-12 items-start">
         <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-lg sm:text-xl leading-relaxed text-foreground/80">
-          I'm an engineering student passionate about <em className="text-foreground">AI, technology, and continuous learning</em>.
+          I'm a B.Tech Information Technology student passionate about <em className="text-foreground">AI, technology, and continuous learning</em>.
           I enjoy exploring software development and shaping my craft through projects, internships, and hands-on experience.
           Beyond code, I love coordinating teams, hosting events, and turning ideas into experiences.
         </motion.p>
@@ -241,7 +333,7 @@ function About() {
 /* ---------- EDUCATION ---------- */
 function Education() {
   const items = [
-    { year: "Present", title: "B.E. Engineering — 3rd Year", place: "New Prince Shri Bhavani College of Engineering and Technology" },
+    { year: "Present", title: "B.Tech Information Technology — 3rd Year", place: "New Prince Shri Bhavani College of Engineering and Technology" },
     { year: "School", title: "Higher Secondary", place: "Bethel Matriculation Higher Secondary School" },
   ];
   return (
