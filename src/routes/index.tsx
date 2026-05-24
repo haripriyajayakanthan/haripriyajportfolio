@@ -6,7 +6,7 @@ import {
   Code2, Palette, PenTool, Sparkles, Mic2, Users, Trophy,
   ArrowRight, MapPin, Send, Brain, Cpu, Zap, Bot, Wand2, Command, Activity,
 } from "lucide-react";
-import portrait from "@/assets/hero-portrait.jpg";
+import portrait from "@/assets/profile.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
