@@ -308,7 +308,7 @@ function About() {
       <SectionHeader kicker="About" title="A curious mind, building thoughtfully." />
       <div className="grid lg:grid-cols-2 gap-12 items-start">
         <motion.p initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-lg sm:text-xl leading-relaxed text-foreground/80">
-          I'm an engineering student passionate about <em className="text-foreground">AI, technology, and continuous learning</em>.
+          I'm a B.Tech Information Technology student passionate about <em className="text-foreground">AI, technology, and continuous learning</em>.
           I enjoy exploring software development and shaping my craft through projects, internships, and hands-on experience.
           Beyond code, I love coordinating teams, hosting events, and turning ideas into experiences.
         </motion.p>
