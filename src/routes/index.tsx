@@ -124,7 +124,7 @@ function Hero() {
           </h1>
 
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
-            Engineering student · Web designer · Web developer · Content creator.
+            B.Tech Information Technology student · Web designer · Web developer · Content creator.
             Passionate about AI, technology, creativity, and continuous learning.
           </motion.p>
 
@@ -139,7 +139,7 @@ function Hero() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }} className="flex items-center gap-8 pt-4 text-sm text-muted-foreground">
-            <div><div className="font-display text-2xl text-foreground">3rd</div>Year B.E.</div>
+            <div><div className="font-display text-2xl text-foreground">3rd</div>Year B.Tech</div>
             <div className="h-8 w-px bg-border" />
             <div><div className="font-display text-2xl text-foreground">6+</div>Core skills</div>
             <div className="h-8 w-px bg-border" />
@@ -241,7 +241,7 @@ function About() {
 /* ---------- EDUCATION ---------- */
 function Education() {
   const items = [
-    { year: "Present", title: "B.E. Engineering — 3rd Year", place: "New Prince Shri Bhavani College of Engineering and Technology" },
+    { year: "Present", title: "B.Tech Information Technology — 3rd Year", place: "New Prince Shri Bhavani College of Engineering and Technology" },
     { year: "School", title: "Higher Secondary", place: "Bethel Matriculation Higher Secondary School" },
   ];
   return (
