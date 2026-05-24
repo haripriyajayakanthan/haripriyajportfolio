@@ -85,20 +85,63 @@ function Navbar() {
 }
 
 /* ---------- HERO ---------- */
+const AI_PROMPTS = [
+  "Designing intelligent interfaces…",
+  "Training curiosity.exe…",
+  "Generating creative ideas…",
+  "Building tomorrow, today…",
+];
+
+function useTypewriter(words: string[], speed = 60, pause = 1600) {
+  const [text, setText] = useState("");
+  const [i, setI] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  useEffect(() => {
+    const current = words[i % words.length];
+    if (!deleting && text === current) {
+      const t = setTimeout(() => setDeleting(true), pause);
+      return () => clearTimeout(t);
+    }
+    if (deleting && text === "") {
+      setDeleting(false);
+      setI((v) => v + 1);
+      return;
+    }
+    const t = setTimeout(() => {
+      setText(deleting ? current.slice(0, text.length - 1) : current.slice(0, text.length + 1));
+    }, deleting ? speed / 2 : speed);
+    return () => clearTimeout(t);
+  }, [text, deleting, i, words, speed, pause]);
+  return text;
+}
+
 function Hero() {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const typed = useTypewriter(AI_PROMPTS);
+
+  // Mouse-tracked parallax for the portrait card
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const rx = useSpring(useTransform(my, [-50, 50], [8, -8]), { stiffness: 120, damping: 15 });
+  const ry = useSpring(useTransform(mx, [-50, 50], [-8, 8]), { stiffness: 120, damping: 15 });
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mx.set(((e.clientX - rect.left) / rect.width - 0.5) * 100);
+    my.set(((e.clientY - rect.top) / rect.height - 0.5) * 100);
+  };
+  const handleLeave = () => { mx.set(0); my.set(0); };
 
   return (
     <section ref={ref} id="home" className="relative min-h-screen pt-32 pb-20 px-4 sm:px-8 overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-      {/* AI Neural Grid Background */}
+      {/* Neural grid + nodes */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 opacity-[0.03]" style={{
+        <div className="absolute inset-0 opacity-[0.04]" style={{
           backgroundImage: `linear-gradient(var(--foreground) 1px, transparent 1px), linear-gradient(90deg, var(--foreground) 1px, transparent 1px)`,
           backgroundSize: '60px 60px',
+          maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)',
         }} />
-        {/* Floating data nodes */}
         {[
           { top: '15%', left: '8%', size: 3, delay: 0, duration: 8 },
           { top: '25%', left: '85%', size: 4, delay: 1, duration: 10 },
@@ -112,27 +155,12 @@ function Hero() {
           <motion.div
             key={i}
             className="absolute rounded-full bg-accent/40"
-            style={{
-              top: node.top,
-              left: node.left,
-              width: node.size,
-              height: node.size,
-              boxShadow: '0 0 12px 2px oklch(0.82 0.06 305 / 0.3)',
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.3, 0.8, 0.3],
-            }}
-            transition={{
-              duration: node.duration,
-              delay: node.delay,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            style={{ top: node.top, left: node.left, width: node.size, height: node.size, boxShadow: '0 0 12px 2px oklch(0.82 0.06 305 / 0.35)' }}
+            animate={{ y: [0, -20, 0], opacity: [0.3, 0.9, 0.3] }}
+            transition={{ duration: node.duration, delay: node.delay, repeat: Infinity, ease: "easeInOut" }}
           />
         ))}
-        {/* Glowing connection lines */}
-        <svg className="absolute inset-0 w-full h-full opacity-[0.06]" xmlns="http://www.w3.org/2000/svg">
+        <svg className="absolute inset-0 w-full h-full opacity-[0.08]" xmlns="http://www.w3.org/2000/svg">
           <line x1="8%" y1="15%" x2="60%" y2="10%" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4">
             <animate attributeName="stroke-dashoffset" from="0" to="16" dur="3s" repeatCount="indefinite" />
           </line>
@@ -142,20 +170,22 @@ function Hero() {
           <line x1="12%" y1="65%" x2="70%" y2="85%" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4">
             <animate attributeName="stroke-dashoffset" from="0" to="16" dur="5s" repeatCount="indefinite" />
           </line>
-          <line x1="90%" y1="75%" x2="70%" y2="85%" stroke="currentColor" strokeWidth="0.5" strokeDasharray="4 4">
-            <animate attributeName="stroke-dashoffset" from="0" to="16" dur="3.5s" repeatCount="indefinite" />
-          </line>
         </svg>
       </div>
 
-      <motion.div className="absolute -top-40 -right-40 h-[500px] w-[500px] rounded-full opacity-50 blur-3xl"
+      {/* Aurora blobs */}
+      <motion.div className="absolute -top-40 -right-40 h-[520px] w-[520px] rounded-full opacity-60 blur-3xl"
         style={{ background: "var(--gradient-soft)" }}
-        animate={{ scale: [1, 1.1, 1], rotate: [0, 30, 0] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ scale: [1, 1.15, 1], rotate: [0, 40, 0] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       />
-      <motion.div className="absolute -bottom-32 -left-32 h-[400px] w-[400px] rounded-full opacity-40 blur-3xl bg-blush"
+      <motion.div className="absolute -bottom-32 -left-32 h-[420px] w-[420px] rounded-full opacity-50 blur-3xl bg-blush"
         animate={{ scale: [1.1, 1, 1.1] }}
         transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div className="absolute top-1/3 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full opacity-30 blur-3xl bg-lavender"
+        animate={{ x: [-40, 40, -40], y: [-20, 20, -20] }}
+        transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <div className="relative mx-auto max-w-7xl grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-16 items-center">
@@ -164,14 +194,18 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
             className="inline-flex items-center gap-2 rounded-full glass px-4 py-1.5 text-xs tracking-wide text-muted-foreground"
           >
-            <Brain className="h-3.5 w-3.5 text-accent" /> Exploring AI & building the future
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+            </span>
+            <Brain className="h-3.5 w-3.5 text-accent" /> AI · Design · Code — in motion
           </motion.div>
 
           <h1 className="font-display text-5xl sm:text-7xl lg:text-8xl leading-[0.95] text-balance">
             <motion.span initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="block">
               Hi, I'm
             </motion.span>
-            <motion.span initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} className="block italic font-light">
+            <motion.span initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }} className="block italic font-light bg-gradient-to-r from-foreground via-accent to-foreground bg-clip-text text-transparent bg-[length:200%_auto] animate-[shimmer_8s_linear_infinite]">
               Haripriya
             </motion.span>
             <motion.span initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }} className="block">
@@ -179,18 +213,30 @@ function Hero() {
             </motion.span>
           </h1>
 
+          {/* Typewriter line */}
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            className="inline-flex items-center gap-2 font-mono text-sm text-foreground/80"
+          >
+            <Wand2 className="h-4 w-4 text-accent" />
+            <span className="text-muted-foreground">&gt;</span>
+            <span>{typed}</span>
+            <span className="inline-block h-4 w-[2px] bg-foreground animate-pulse" />
+          </motion.div>
+
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }} className="text-base sm:text-lg text-muted-foreground max-w-xl leading-relaxed">
             B.Tech Information Technology student · Web designer · Web developer · Content creator.
             Passionate about AI, technology, creativity, and continuous learning.
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.75 }} className="flex flex-wrap gap-3">
-            <a href="#projects" className="group inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm hover:opacity-90 transition shadow-glow">
+            <a href="#projects" className="group relative inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3 text-sm hover:opacity-90 transition shadow-glow overflow-hidden">
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-700" />
               View portfolio
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition" />
             </a>
             <a href="#contact" className="inline-flex items-center gap-2 rounded-full border border-foreground/15 px-6 py-3 text-sm hover:bg-secondary transition">
-              Contact me
+              <Command className="h-3.5 w-3.5" /> Contact me
             </a>
           </motion.div>
 
@@ -206,42 +252,84 @@ function Hero() {
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.2 }}
           className="relative mx-auto lg:mx-0 w-full max-w-md"
+          onMouseMove={handleMove}
+          onMouseLeave={handleLeave}
+          style={{ perspective: 1000 }}
         >
-          {/* AI ring around portrait */}
+          {/* Conic aurora behind portrait */}
           <motion.div
-            className="absolute -inset-4 rounded-[2.5rem] border border-accent/20 pointer-events-none"
+            className="absolute -inset-6 rounded-[3rem] opacity-70 blur-2xl"
+            style={{ background: "conic-gradient(from 0deg, oklch(0.87 0.055 305 / 0.6), oklch(0.91 0.035 25 / 0.5), oklch(0.93 0.025 75 / 0.5), oklch(0.87 0.055 305 / 0.6))" }}
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          />
+
+          {/* Orbital rings */}
+          <motion.div
+            className="absolute -inset-4 rounded-[2.5rem] border border-accent/25 pointer-events-none"
             animate={{ rotate: [0, 360] }}
             transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
           />
           <motion.div
-            className="absolute -inset-8 rounded-[3rem] border border-dashed border-foreground/5 pointer-events-none"
+            className="absolute -inset-8 rounded-[3rem] border border-dashed border-foreground/10 pointer-events-none"
             animate={{ rotate: [360, 0] }}
             transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
           />
 
-          <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-glow">
+          <motion.div
+            style={{ rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
+            className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-glow"
+          >
             <div className="absolute inset-0" style={{ background: "var(--gradient-soft)" }} />
             <img src={portrait} alt="Haripriya Jayakanthan portrait" width={1024} height={1280} className="relative h-full w-full object-cover mix-blend-luminosity opacity-95" />
-            <div className="absolute inset-0 ring-1 ring-inset ring-white/30 rounded-[2rem]" />
-            {/* Scan line overlay */}
+            {/* Holographic sheen */}
             <motion.div
-              className="absolute inset-x-0 h-px bg-accent/30"
+              className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none"
+              style={{ background: "linear-gradient(115deg, transparent 30%, oklch(0.95 0.06 305 / 0.6) 50%, transparent 70%)", backgroundSize: "200% 200%" }}
+              animate={{ backgroundPosition: ["0% 0%", "200% 200%"] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
+            />
+            <div className="absolute inset-0 ring-1 ring-inset ring-white/30 rounded-[2rem]" />
+            {/* Corner brackets */}
+            {[
+              "top-3 left-3 border-t border-l",
+              "top-3 right-3 border-t border-r",
+              "bottom-3 left-3 border-b border-l",
+              "bottom-3 right-3 border-b border-r",
+            ].map((c, i) => (
+              <span key={i} className={`absolute ${c} h-5 w-5 border-white/50`} />
+            ))}
+            {/* Scan line */}
+            <motion.div
+              className="absolute inset-x-0 h-px bg-accent/40 shadow-[0_0_12px_2px_oklch(0.82_0.06_305/0.5)]"
               animate={{ top: ['0%', '100%', '0%'] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
-          </div>
+          </motion.div>
 
+          {/* AI prompt card */}
           <motion.div
-            animate={{ y: [0, -10, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -bottom-6 -left-6 glass rounded-2xl px-4 py-3 shadow-soft flex items-center gap-3"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}
+            className="absolute -bottom-8 -left-8 glass rounded-2xl p-3 shadow-soft w-56"
           >
-            <div className="h-9 w-9 rounded-full bg-accent flex items-center justify-center"><Bot className="h-4 w-4" /></div>
-            <div className="text-xs">
-              <div className="font-medium">Currently learning</div>
-              <div className="text-muted-foreground">AI & Generative Models</div>
+            <div className="flex items-center gap-2 text-[10px] text-muted-foreground mb-2">
+              <div className="flex gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-red-400/70" />
+                <span className="h-1.5 w-1.5 rounded-full bg-yellow-400/70" />
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70" />
+              </div>
+              <span className="ml-auto font-mono">haripriya.ai</span>
+            </div>
+            <div className="flex items-start gap-2">
+              <Bot className="h-3.5 w-3.5 text-accent mt-0.5 shrink-0" />
+              <div className="text-[11px] font-mono leading-relaxed">
+                <span className="text-muted-foreground">$ </span>{typed}
+                <span className="inline-block h-3 w-[2px] bg-foreground/70 ml-0.5 animate-pulse align-middle" />
+              </div>
             </div>
           </motion.div>
 
+          {/* Open to work */}
           <motion.div
             animate={{ y: [0, 10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
             className="absolute -top-4 -right-4 glass rounded-full px-4 py-2 shadow-soft text-xs flex items-center gap-2"
@@ -249,20 +337,33 @@ function Hero() {
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" /> Open to work
           </motion.div>
 
+          {/* ML Enthusiast */}
           <motion.div
             animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute top-1/2 -right-10 glass rounded-xl px-3 py-2 shadow-soft flex items-center gap-2"
+            className="absolute top-1/3 -right-10 glass rounded-xl px-3 py-2 shadow-soft flex items-center gap-2"
           >
             <Cpu className="h-3.5 w-3.5 text-accent" />
             <span className="text-[10px] font-medium">ML Enthusiast</span>
           </motion.div>
 
+          {/* Live signal — audio bars */}
           <motion.div
             animate={{ y: [0, 8, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
             className="absolute bottom-1/3 -left-10 glass rounded-xl px-3 py-2 shadow-soft flex items-center gap-2"
           >
-            <Zap className="h-3.5 w-3.5 text-accent" />
-            <span className="text-[10px] font-medium">Tech Explorer</span>
+            <Activity className="h-3.5 w-3.5 text-accent" />
+            <div className="flex items-end gap-0.5 h-3">
+              {[0.4, 0.9, 0.6, 1, 0.5].map((h, i) => (
+                <motion.span
+                  key={i}
+                  className="w-0.5 bg-accent rounded-full"
+                  animate={{ scaleY: [h, h * 0.4, h] }}
+                  transition={{ duration: 0.9 + i * 0.15, repeat: Infinity, ease: "easeInOut" }}
+                  style={{ height: '100%', transformOrigin: 'bottom' }}
+                />
+              ))}
+            </div>
+            <span className="text-[10px] font-medium">live</span>
           </motion.div>
         </motion.div>
       </div>
