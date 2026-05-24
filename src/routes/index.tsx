@@ -6,7 +6,7 @@ import {
   Code2, Palette, PenTool, Sparkles, Mic2, Users, Trophy,
   ArrowRight, MapPin, Send, Brain, Cpu, Zap, Bot, Wand2, Command, Activity,
 } from "lucide-react";
-import portrait from "@/assets/hero-portrait.jpg";
+import portrait from "@/assets/profile.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -278,30 +278,21 @@ function Hero() {
 
           <motion.div
             style={{ rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
-            className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-glow"
+            className="relative aspect-square rounded-full overflow-hidden shadow-glow"
           >
             <div className="absolute inset-0" style={{ background: "var(--gradient-soft)" }} />
-            <img src={portrait} alt="Haripriya Jayakanthan portrait" width={1024} height={1280} className="relative h-full w-full object-cover mix-blend-luminosity opacity-95" />
+            <img src={portrait} alt="Haripriya Jayakanthan" width={1024} height={1024} className="relative h-full w-full object-cover" />
             {/* Holographic sheen */}
             <motion.div
-              className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none"
+              className="absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none rounded-full"
               style={{ background: "linear-gradient(115deg, transparent 30%, oklch(0.95 0.06 305 / 0.6) 50%, transparent 70%)", backgroundSize: "200% 200%" }}
               animate={{ backgroundPosition: ["0% 0%", "200% 200%"] }}
               transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
             />
-            <div className="absolute inset-0 ring-1 ring-inset ring-white/30 rounded-[2rem]" />
-            {/* Corner brackets */}
-            {[
-              "top-3 left-3 border-t border-l",
-              "top-3 right-3 border-t border-r",
-              "bottom-3 left-3 border-b border-l",
-              "bottom-3 right-3 border-b border-r",
-            ].map((c, i) => (
-              <span key={i} className={`absolute ${c} h-5 w-5 border-white/50`} />
-            ))}
-            {/* Scan line */}
+            <div className="absolute inset-0 ring-1 ring-inset ring-white/30 rounded-full" />
+            {/* Subtle scan line */}
             <motion.div
-              className="absolute inset-x-0 h-px bg-accent/40 shadow-[0_0_12px_2px_oklch(0.82_0.06_305/0.5)]"
+              className="absolute inset-x-0 h-px bg-accent/30 shadow-[0_0_8px_1px_oklch(0.82_0.06_305/0.4)]"
               animate={{ top: ['0%', '100%', '0%'] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             />
