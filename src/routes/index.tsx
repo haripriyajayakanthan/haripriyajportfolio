@@ -11,10 +11,10 @@ import portrait from "@/assets/hero-portrait.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Haripriya Jayakanthan — Engineer, Designer & Creator" },
-      { name: "description", content: "Portfolio of Haripriya Jayakanthan — engineering student passionate about AI, web design, development and content creation." },
+      { title: "Haripriya Jayakanthan — B.Tech IT, Designer & Creator" },
+      { name: "description", content: "Portfolio of Haripriya Jayakanthan — B.Tech Information Technology student passionate about AI, web design, development and content creation." },
       { property: "og:title", content: "Haripriya Jayakanthan — Portfolio" },
-      { property: "og:description", content: "Engineering student. Web designer. Web developer. Content creator." },
+      { property: "og:description", content: "B.Tech IT student. Web designer. Web developer. Content creator." },
     ],
   }),
   component: Portfolio,
