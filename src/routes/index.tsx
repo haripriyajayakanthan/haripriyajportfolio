@@ -633,8 +633,39 @@ function Leadership() {
 }
 
 /* ---------- CONTACT ---------- */
+const EMAILJS_SERVICE_ID = "service_242cv5u";
+const EMAILJS_TEMPLATE_ID = "template_uvm8zwt";
+const EMAILJS_PUBLIC_KEY = "ue1LJ5q7zq-5KWIjx";
+
 function Contact() {
-  const [sent, setSent] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const emailjs = (await import("@emailjs/browser")).default;
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        { from_name: form.name, from_email: form.email, message: form.message },
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
+      setStatus("sent");
+      setForm({ name: "", email: "", message: "" });
+      setTimeout(() => setStatus("idle"), 4000);
+    } catch (err) {
+      console.error("EmailJS error:", err);
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 4000);
+    }
+  };
+
   return (
     <Section id="contact">
       <div className="grid lg:grid-cols-[1.1fr_1fr] gap-12 items-start">
@@ -669,18 +700,22 @@ function Contact() {
 
         <motion.form
           initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          onSubmit={(e) => { e.preventDefault(); setSent(true); setTimeout(() => setSent(false), 3000); }}
+          onSubmit={handleSubmit}
           className="rounded-3xl bg-card border border-border p-7 sm:p-9 shadow-soft space-y-5"
         >
-          <Field label="Your name" id="name" placeholder="Jane Doe" />
-          <Field label="Email" id="email" type="email" placeholder="you@email.com" />
+          <Field label="Your name" id="name" name="name" value={form.name} onChange={handleChange} placeholder="Jane Doe" />
+          <Field label="Email" id="email" name="email" type="email" value={form.email} onChange={handleChange} placeholder="you@email.com" />
           <div>
             <label htmlFor="message" className="text-xs uppercase tracking-widest text-muted-foreground">Message</label>
-            <textarea id="message" required maxLength={1000} rows={5} placeholder="Tell me about your idea…"
+            <textarea id="message" name="message" required maxLength={1000} rows={5} placeholder="Tell me about your idea…"
+              value={form.message} onChange={handleChange}
               className="mt-2 w-full rounded-2xl bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring resize-none" />
           </div>
-          <button type="submit" className="group w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm hover:opacity-90 transition shadow-glow">
-            {sent ? "Sent — thank you!" : <>Send message <Send className="h-4 w-4 group-hover:translate-x-1 transition" /></>}
+          <button type="submit" disabled={status === "sending"} className="group w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary text-primary-foreground px-6 py-3.5 text-sm hover:opacity-90 transition shadow-glow disabled:opacity-60">
+            {status === "sending" && "Sending…"}
+            {status === "sent" && "Sent — thank you!"}
+            {status === "error" && "Couldn't send — try again"}
+            {status === "idle" && (<>Send message <Send className="h-4 w-4 group-hover:translate-x-1 transition" /></>)}
           </button>
         </motion.form>
       </div>
@@ -688,11 +723,11 @@ function Contact() {
   );
 }
 
-function Field({ label, id, type = "text", placeholder }: { label: string; id: string; type?: string; placeholder: string }) {
+function Field({ label, id, name, type = "text", placeholder, value, onChange }: { label: string; id: string; name: string; type?: string; placeholder: string; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
   return (
     <div>
       <label htmlFor={id} className="text-xs uppercase tracking-widest text-muted-foreground">{label}</label>
-      <input id={id} type={type} required maxLength={255} placeholder={placeholder}
+      <input id={id} name={name} type={type} required maxLength={255} placeholder={placeholder} value={value} onChange={onChange}
         className="mt-2 w-full rounded-2xl bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
     </div>
   );
