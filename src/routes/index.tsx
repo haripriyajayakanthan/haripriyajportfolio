@@ -8,6 +8,9 @@ import {
   Globe, ExternalLink, Bookmark, FolderGit2,
 } from "lucide-react";
 import portrait from "@/assets/profile.jpg";
+import svDashboard from "@/assets/studentverse-dashboard.png.asset.json";
+import svNotes from "@/assets/studentverse-notes.png.asset.json";
+import svCommunity from "@/assets/studentverse-community.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -606,8 +609,33 @@ function Projects() {
                     {p.status}
                   </span>
                 </div>
+
+                <div className="grid grid-cols-3 gap-2 mb-5">
+                  {[
+                    { src: svDashboard.url, alt: "StudentVerse Dashboard" },
+                    { src: svNotes.url, alt: "StudentVerse Notes Hub" },
+                    { src: svCommunity.url, alt: "StudentVerse Community" },
+                  ].map((img) => (
+                    <a
+                      key={img.src}
+                      href={p.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/img relative aspect-video rounded-xl overflow-hidden border border-border bg-background/40"
+                    >
+                      <img
+                        src={img.src}
+                        alt={img.alt}
+                        loading="lazy"
+                        className="h-full w-full object-cover object-top transition-transform duration-500 group-hover/img:scale-105"
+                      />
+                    </a>
+                  ))}
+                </div>
+
                 <h3 className="font-display text-3xl mb-2">{p.title}</h3>
                 <p className="text-sm text-foreground/70 leading-relaxed mb-4">{p.desc}</p>
+
 
                 <div className="flex flex-wrap gap-2 mb-4">
                   {p.features?.map((f) => (
