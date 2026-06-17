@@ -566,11 +566,21 @@ function Services() {
 
 /* ---------- PROJECTS ---------- */
 function Projects() {
-  const placeholders = [
-    { tag: "AI · Web", title: "Coming Soon", hue: "var(--lavender)" },
-    { tag: "Design · UI", title: "Coming Soon", hue: "var(--beige)" },
-    { tag: "Content · Brand", title: "Coming Soon", hue: "var(--blush)" },
+  const projects = [
+    {
+      tag: "Web Application",
+      title: "StudentVerse",
+      desc: "A full-stack student collaboration platform with authentication, notes hub, internship finder, team matching, events, community feed, and cloud database.",
+      features: ["User Authentication", "Notes Hub", "Internship Hub", "Team Finder", "Events Hub", "Community Feed", "User Profiles", "Cloud DB"],
+      stack: ["HTML", "CSS", "JavaScript", "Firebase Auth", "Firestore", "Firebase Hosting"],
+      link: "https://studentverse-56744.web.app",
+      status: "Live",
+      hue: "var(--lavender)",
+    },
+    { tag: "AI · Web", title: "Coming Soon", desc: "Exciting project on the way.", hue: "var(--beige)" },
+    { tag: "Design · UI", title: "Coming Soon", desc: "Something creative brewing.", hue: "var(--blush)" },
   ];
+
   return (
     <Section id="projects" className="bg-secondary/40">
       <SectionHeader
@@ -579,22 +589,61 @@ function Projects() {
         lead="Exciting projects are on the way as I continue learning, building and experimenting."
       />
       <div className="grid md:grid-cols-3 gap-5">
-        {placeholders.map((p, i) => (
+        {projects.map((p, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="group relative aspect-[4/5] rounded-3xl overflow-hidden border border-border"
+            className={`group relative rounded-3xl overflow-hidden border border-border ${p.title === "StudentVerse" ? "md:col-span-2 md:row-span-1" : ""}`}
             style={{ background: `linear-gradient(160deg, ${p.hue}, var(--card))` }}
           >
-            <div className="absolute inset-0 backdrop-blur-[2px] group-hover:backdrop-blur-0 transition-all duration-500" />
-            <div className="absolute inset-0 p-7 flex flex-col justify-between">
-              <span className="self-start text-xs uppercase tracking-widest text-foreground/60 glass rounded-full px-3 py-1">{p.tag}</span>
-              <div>
-                <div className="font-display text-3xl mb-1">{p.title}</div>
-                <div className="text-sm text-foreground/60">Stay tuned ↗</div>
+            {p.title === "StudentVerse" ? (
+              <div className="relative p-7 flex flex-col h-full min-h-[420px]">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs uppercase tracking-widest text-foreground/60 glass rounded-full px-3 py-1">{p.tag}</span>
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-600 bg-emerald-100 dark:bg-emerald-900/30 rounded-full px-2.5 py-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    {p.status}
+                  </span>
+                </div>
+                <h3 className="font-display text-3xl mb-2">{p.title}</h3>
+                <p className="text-sm text-foreground/70 leading-relaxed mb-4">{p.desc}</p>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {p.features?.map((f) => (
+                    <span key={f} className="text-xs bg-background/60 rounded-full px-2.5 py-1 border border-border">{f}</span>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {p.stack?.map((s) => (
+                    <span key={s} className="text-xs text-muted-foreground bg-secondary/60 rounded-full px-2.5 py-1">{s}</span>
+                  ))}
+                </div>
+
+                <div className="mt-auto flex items-center gap-3">
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-4 py-2 text-sm hover:opacity-90 transition"
+                  >
+                    <Globe className="h-4 w-4" /> Live Demo
+                  </a>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden">
+                <div className="absolute inset-0 backdrop-blur-[2px] group-hover:backdrop-blur-0 transition-all duration-500" />
+                <div className="absolute inset-0 p-7 flex flex-col justify-between">
+                  <span className="self-start text-xs uppercase tracking-widest text-foreground/60 glass rounded-full px-3 py-1">{p.tag}</span>
+                  <div>
+                    <div className="font-display text-3xl mb-1">{p.title}</div>
+                    <div className="text-sm text-foreground/60">{p.desc}</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </motion.div>
         ))}
       </div>
