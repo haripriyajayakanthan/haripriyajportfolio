@@ -5,6 +5,7 @@ import {
   ArrowUpRight, Mail, Linkedin, GraduationCap, Briefcase,
   Code2, Palette, PenTool, Sparkles, Mic2, Users, Trophy,
   ArrowRight, MapPin, Send, Brain, Cpu, Zap, Bot, Wand2, Command, Activity,
+  Globe, ExternalLink, Bookmark, FolderGit2,
 } from "lucide-react";
 import portrait from "@/assets/profile.jpg";
 
